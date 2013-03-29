@@ -5,7 +5,6 @@ use v5.12;
 our $VERSION = '0.01';
 
 use Moo;
-use Config::Tiny;
 
 has args        => ( is => 'ro', required => 1 );
 has config      => ( is => 'ro', required => 1 );

@@ -14,14 +14,24 @@ if (!@ARGV || $ARGV[0] =~ /^--?h/) {
     }
 
 # Not helping, so check for a config
-my $config_file;
-if (-e "$ENV{HOME}/.g2rc") {
-    $config_file = "$ENV{HOME}/.g2rc";
+my $my_config_file  = "$ENV{HOME}/.g2rc";
+my $etc_config_file = "/etc/g2rc";
+
+my $my_config  = Config::Tiny->read( $my_config_file );
+my $etc_config = Config::Tiny->read( $etc_config_file );
+
+# Munge the two configs together, over-riding the /etc copy where appropriate
+my $config = {};
+my %keys;
+# Slightly ugly way to get all the keys used by both configs
+for my $key (keys %$my_config, keys %$etc_config) {
+    $keys{$key} = 1;
     }
-else {
-    $config_file = "/etc/g2rc";
+# Do the munge
+foreach my $key (keys %keys) {
+    $config->{$key} = { %{$etc_config->{$key}||{}}, %{$my_config->{$key}||{}} };
     }
-my $config = Config::Tiny->read( $config_file );
+
 unless ($config->{hosts}) {
     die "No valid config file found";
     }
