@@ -8,7 +8,7 @@ use Moo;
 
 has args        => ( is => 'ro', required => 1 );
 has config      => ( is => 'ro', required => 1 );
-has error       => ( is => 'rw', default => 'Unknown error' );
+has error       => ( is => 'rw', default => sub { 'Unknown error' } );
 has is_success  => ( is => 'rw', default => 1 );
 has cmd         => ( is => 'rw' );
 has name        => ( is => 'rw', default => '' );
