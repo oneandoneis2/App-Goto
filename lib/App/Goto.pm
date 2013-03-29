@@ -49,6 +49,10 @@ sub _get_host {
 sub _get_command {
     my ($self, $cmd) = @_;
     my $config      = $self->config;
+    # If they supplied one, separate out the modifier
+    my $modifier;
+    ($cmd, undef, $modifier) = $cmd =~ m#^([^/]*)(/(.*))?#;
+
     # Check if the server has its own instance of this command defined.
     # If so, use it. If not, use the generic version.
     my $command;
@@ -64,6 +68,11 @@ sub _get_command {
         $self->error('Command not recognised');
         return;
         }
+
+    # Replace command's modifier placeholder with supplied modifier
+    # (if supplied) or nothing
+    $modifier = '' unless $modifier;
+    $command =~ s#\%s#$modifier#;
 
     # If we have a command, tell SSH to execute it remotely via '-t'
     return "-t $command";

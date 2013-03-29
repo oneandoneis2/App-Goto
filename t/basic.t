@@ -11,7 +11,7 @@ my $config = bless( {
             'foo' => 'FOO',
             },
         'commands' => {
-            'log' => '\'cd /var/log/ && bash\''
+            'log' => '\'cd /var/log/%s && bash\''
             },
         'foo_commands' => {
             'log' => 'foo-log'
@@ -41,6 +41,12 @@ GET_RIGHT_COMMAND: {
 GET_RIGHT_CUSTOM_COMMAND: {
     my $goto = App::Goto->new({ config => $config, args => [qw/foo log/] });
     ok($goto->cmd() =~ m#foo-log#, 'Got the right custom command');
+    };
+
+GET_RIGHT_MODIFIED_COMMAND: {
+    my $goto = App::Goto->new({ config => $config, args => [qw#lo log/syslog/#] });
+    diag $goto->cmd();
+    ok($goto->cmd() =~ m#cd /var/log/syslog/#, 'Got the right modified command');
     };
 
 GET_EVERYTHING_RIGHT: {
