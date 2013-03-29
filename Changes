@@ -1,6 +1,8 @@
 Revision history for App-Goto
 
 {{$NEXT}}
+
+0.03  2013-03-29 22:16:21 GMT
         - Correction to Moo attribute to be a coderef
 
 0.02  2013-03-29 18:57:23 GMT
