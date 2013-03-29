@@ -1,5 +1,5 @@
 {
-   "abstract" : "Blah blah blah",
+   "abstract" : "Utility for accessing remote servers via SSH",
    "author" : [
       "Dominic Humphries <dominic@oneandoneis2.com>"
    ],
@@ -26,7 +26,7 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008005"
+            "perl" : "5.012000"
          }
       },
       "test" : {
