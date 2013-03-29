@@ -45,7 +45,6 @@ GET_RIGHT_CUSTOM_COMMAND: {
 
 GET_RIGHT_MODIFIED_COMMAND: {
     my $goto = App::Goto->new({ config => $config, args => [qw#lo log/syslog/#] });
-    diag $goto->cmd();
     ok($goto->cmd() =~ m#cd /var/log/syslog/#, 'Got the right modified command');
     };
 
