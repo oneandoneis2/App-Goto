@@ -1,0 +1,38 @@
+#!/usr/bin/env perl
+
+use v5.12;
+use warnings;
+use Config::Tiny;
+
+# Quit with help text if asked for it/didn't ask for anything
+unless (@ARGV || $ARGV[0] =~ /^--?h/) {
+    say "g2: shortcut utility";
+    say "g2 <label for desired host> [label for command to run remotely]"
+    say "Requires valid config file at /etc/g2rc or ~/.g2rc";
+    exit;
+    }
+
+# Not helping, so check for a config
+my $config_file;
+if (-e "$ENV{HOME}/.g2rc") {
+    $config_file = "$ENV{HOME}/.g2rc";
+    }
+else {
+    $config_file = "/etc/g2rc";
+    }
+my $config = Config::Tiny->read( $config_file );
+unless ($config->{hosts}) {
+    die "No valid config file found";
+    }
+
+# Config file exists, command has been given. Do what's needed
+my $goto = App::Goto->new({ args => \@ARGV, config => $config });
+
+# Handle bad input
+unless ($goto->is_success) {
+    say $goto->error();
+    exit
+    }
+
+# Looks like we're good to go
+system( $goto->cmd() );
