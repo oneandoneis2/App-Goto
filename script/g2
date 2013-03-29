@@ -52,3 +52,69 @@ if ($ENV{G2DB}) {
 else {
     system( $goto->cmd() );
     }
+
+# PODNAME: g2
+
+# ABSTRACT: g2 - command-line application to reduce typing needed to access a server
+
+# VERSION
+
+=head1 SYNOPSIS
+
+For reducing the amount of typing needed to access frequently-needed server locations.
+e.g. if you often need to get to the /var/log directory of the server at example.com
+you should be able to reach it as simply as
+
+    g2 ex log
+
+instead of having to go the normal route of
+
+    ssh example.com
+    cd /var/log
+
+Requires config file in either/both of:
+
+    /etc/g2rc   ~/.g2rc
+
+In the format:
+
+    [hosts]
+    localhost   = 127.0.0.1
+    first       = firstserver
+    second      = secondserver
+    szzzzz      = szzzzzserver
+    [commands]
+    log = 'cd /var/log/%s && bash'
+    top = 'top'
+    [first_commands]
+    top = 'htop'
+
+Usage:
+
+    g2 l            => ssh 127.0.0.1
+    g2 l log        => ssh 127.0.0.1 -t 'cd /var/log/ && bash'
+    g2 l log/syslog => ssh 127.0.0.1 -t 'cd /var/log/syslog && bash'
+    g2 l top        => ssh 127.0.0.1 -t 'top'
+    g2 f top        => ssh firstserver -t 'htop'
+    g2 s            => ssh secondserver
+    g2 sz           => ssh szzzzzserver
+
+=head1 CONVENTIONS
+
+The hostname passed in at the command line can be the shortest possible string needed to
+correctly identify the correct server; commands are optional but must be supplied in full.
+
+When a supplied hostname is ambiguous, such as 's' in the above examples, g2 will always
+use the first version according to Perl's sorting logic.
+
+When anything is specified in both the /etc and the user's own config file, the user's
+version will always be used.
+
+An optional modifier can be supplied to any command by putting a placeholder, '%s',
+into the config file's command string; then adding the modifier to the command string
+on execution, separated by a '/' - see the 'syslog' example above.
+
+Server-specific commands may be specified, which can either be unique, or with the same
+name as a generic command, which it will over-ride.
+
+=cut

@@ -90,12 +90,39 @@ App::Goto - Utility for accessing remote servers via SSH
 
   use App::Goto;
 
+  my $goto = App::Goto->({ config => $config, args => $args });
+
+  system( $goto->cmd );
+
 =head1 DESCRIPTION
 
 App::Goto is designed to make it as easy as possible to access remote servers
 via SSH, allowing you to give the shortest possible unique string needed to
 identify the server, and optionally to specify what command to run upon login -
 such as changing to a frequently-used directory for you.
+
+Requires a hashref of config details that define hosts & commands;
+and an arrayref of arguments to define the specific host & command to use.
+
+=head1 METHODS
+
+=head2 is_success
+
+Boolean, returns true if the passed-in arguments were correctly parsed.
+Otherwise false.
+
+=head2 error
+
+If is_success is false, this should give a useful reason why.
+
+=head2 cmd
+
+Returns the command string calculated based on the passed-in args & config
+
+=head2 name
+
+Returns the calculated hostname from the possibly-ambiguous supplied argument.
+Only really needed for internal use.
 
 =head1 AUTHOR
 
