@@ -12,6 +12,7 @@ has config      => ( is => 'ro', required => 1 );
 has error       => ( is => 'rw', default => 'Unknown error' );
 has is_success  => ( is => 'rw', default => 1 );
 has cmd         => ( is => 'rw' );
+has name        => ( is => 'rw', default => '' );
 
 sub BUILD {
     my $self = shift;
@@ -39,19 +40,32 @@ sub _get_host {
         $self->error('Cannot find hostname in config') unless $hostname;
         return;
         }
+    # Store the retrieved hostname for possible later use
+    $self->name($hostname);
     # Get the right server details for the found hostname
     return $hosts->{$hostname};
     }
 
 sub _get_command {
     my ($self, $cmd) = @_;
-    my $commands = $self->config->{commands};
-    my $command = $commands->{$cmd};
+    my $config      = $self->config;
+    # Check if the server has its own instance of this command defined.
+    # If so, use it. If not, use the generic version.
+    my $command;
+    if (my $custom = $config->{$self->name.'_commands'}{$cmd}) {
+        $command = $custom;
+        }
+    else {
+        $command = $config->{commands}{$cmd};
+        }
+
     unless ($command) {
         $self->is_success(0);
-        $self->error('Command not recognised') unless $command;
+        $self->error('Command not recognised');
         return;
         }
+
+    # If we have a command, tell SSH to execute it remotely via '-t'
     return "-t $command";
     }
 

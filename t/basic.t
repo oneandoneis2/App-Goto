@@ -7,11 +7,15 @@ use Config::Tiny;
 my $config = bless( {
         'hosts' => {
             'localhost' => '127.0.0.1',
-            'lozzzzzzz' => 'Z'
+            'loz' => 'Z',
+            'foo' => 'FOO',
             },
         'commands' => {
             'log' => '\'cd /var/log/ && bash\''
-            }
+            },
+        'foo_commands' => {
+            'log' => 'foo-log'
+            },
         }, 'Config::Tiny' );
 
 CREATE: {
@@ -34,7 +38,12 @@ GET_RIGHT_COMMAND: {
     ok($goto->cmd() =~ m#var/log#, 'Got the right command');
     };
 
-GET_RIGHT_COMMAND: {
+GET_RIGHT_CUSTOM_COMMAND: {
+    my $goto = App::Goto->new({ config => $config, args => [qw/foo log/] });
+    ok($goto->cmd() =~ m#foo-log#, 'Got the right custom command');
+    };
+
+GET_EVERYTHING_RIGHT: {
     my $goto = App::Goto->new({ config => $config, args => [qw/lo log/] });
     is($goto->cmd(), "ssh 127.0.0.1 -t 'cd /var/log/ && bash'", 'Everything looks good');
     };
