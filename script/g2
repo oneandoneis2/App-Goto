@@ -3,12 +3,13 @@
 use v5.12;
 use warnings;
 use Config::Tiny;
+use App::Goto;
 
 # Quit with help text if asked for it/didn't ask for anything
-unless (@ARGV || $ARGV[0] =~ /^--?h/) {
-    say "g2: shortcut utility";
-    say "g2 <label for desired host> [label for command to run remotely]"
-    say "Requires valid config file at /etc/g2rc or ~/.g2rc";
+if (!@ARGV || $ARGV[0] =~ /^--?h/) {
+    say 'g2: shortcut utility';
+    say 'g2 <label for desired host> [label for command to run remotely]';
+    say 'Requires valid config file at /etc/g2rc or ~/.g2rc';
     exit;
     }
 
@@ -35,4 +36,9 @@ unless ($goto->is_success) {
     }
 
 # Looks like we're good to go
-system( $goto->cmd() );
+if ($ENV{G2DB}) {
+    say $goto->cmd();
+    }
+else {
+    system( $goto->cmd() );
+    }
