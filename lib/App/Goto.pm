@@ -2,7 +2,7 @@ package App::Goto;
 
 use strict;
 use v5.12;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Moo;
 
