@@ -10,6 +10,15 @@ App::Goto - Utility for accessing remote servers via SSH
 
     system( $goto->cmd );
 
+Via included 'g2' script, allows for shortening of commands for connecting
+to remote servers. Examples of the type of command that can be shortened
+by using g2 are:
+
+    g2 l log        => ssh 127.0.0.1 -t 'cd /var/log/ && bash'
+    g2 f top        => ssh firstserver -t 'htop'
+
+See g2's own documentation for further details.
+
 # DESCRIPTION
 
 App::Goto is designed to make it as easy as possible to access remote servers
