@@ -18,7 +18,7 @@ my %module_build_args = (
     "Dominic Humphries <dominic\@oneandoneis2.com>"
   ],
   "dist_name" => "App-Goto",
-  "dist_version" => "0.03",
+  "dist_version" => "0.04",
   "license" => "perl",
   "module_name" => "App::Goto",
   "recommends" => {},
