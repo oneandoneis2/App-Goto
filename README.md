@@ -35,10 +35,13 @@ If is\_success is false, this should give a useful reason why.
 
 Returns the command string calculated based on the passed-in args & config
 
-## name
+## nick
 
-Returns the calculated hostname from the possibly-ambiguous supplied argument.
-Only really needed for internal use.
+Returns the calculated nickname from the possibly-ambiguous supplied argument.
+
+## host
+
+Returns the actual hostname for the supplied nickname.
 
 # AUTHOR
 

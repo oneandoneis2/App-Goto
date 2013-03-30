@@ -11,7 +11,8 @@ has config      => ( is => 'ro', required => 1 );
 has error       => ( is => 'rw', default => sub { 'Unknown error' } );
 has is_success  => ( is => 'rw', default => sub { 1 } );
 has cmd         => ( is => 'rw' );
-has name        => ( is => 'rw', default => sub { '' } );
+has nick        => ( is => 'rw', default => sub { '' } );
+has host        => ( is => 'rw', default => sub { '' } );
 
 sub BUILD {
     my $self = shift;
@@ -39,8 +40,9 @@ sub _get_host {
         $self->error('Cannot find hostname in config') unless $hostname;
         return;
         }
-    # Store the retrieved hostname for possible later use
-    $self->name($hostname);
+    # Store the retrieved nick&host names for possible later use
+    $self->nick($hostname);
+    $self->host($hosts->{$hostname});
     # Get the right server details for the found hostname
     return $hosts->{$hostname};
     }
@@ -55,7 +57,7 @@ sub _get_command {
     # Check if the server has its own instance of this command defined.
     # If so, use it. If not, use the generic version.
     my $command;
-    if (my $custom = $config->{$self->name.'_commands'}{$cmd}) {
+    if (my $custom = $config->{$self->nick.'_commands'}{$cmd}) {
         $command = $custom;
         }
     else {
@@ -71,7 +73,11 @@ sub _get_command {
     # Replace command's modifier placeholder with supplied modifier
     # (if supplied) or nothing
     $modifier = '' unless $modifier;
-    $command =~ s#\%s#$modifier#;
+    my $nick = $self->nick;
+    my $host = $self->host;
+    $command =~ s#{{mod}}#$modifier#;
+    $command =~ s#{{nick}}#$nick#;
+    $command =~ s#{{host}}#$host#;
 
     # If we have a command, tell SSH to execute it remotely via '-t'
     return "-t $command";
@@ -119,10 +125,13 @@ If is_success is false, this should give a useful reason why.
 
 Returns the command string calculated based on the passed-in args & config
 
-=head2 name
+=head2 nick
 
-Returns the calculated hostname from the possibly-ambiguous supplied argument.
-Only really needed for internal use.
+Returns the calculated nickname from the possibly-ambiguous supplied argument.
+
+=head2 host
+
+Returns the actual hostname for the supplied nickname.
 
 =head1 AUTHOR
 

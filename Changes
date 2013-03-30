@@ -1,6 +1,8 @@
 Revision history for App-Goto
 
 {{$NEXT}}
+        - Update to allow nickname & hostname to be used in remote command
+        - Change command modifier string in config file from %s to {{mod}}
 
 0.04  2013-03-30 09:15:57 GMT
         - Corrected other default attributes

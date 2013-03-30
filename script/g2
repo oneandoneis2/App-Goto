@@ -84,7 +84,7 @@ In the format:
     second      = secondserver
     szzzzz      = szzzzzserver
     [commands]
-    log = 'cd /var/log/%s && bash'
+    log = 'cd /var/log/{{mod}} && bash'
     top = 'top'
     [first_commands]
     top = 'htop'
@@ -110,9 +110,11 @@ use the first version according to Perl's sorting logic.
 When anything is specified in both the /etc and the user's own config file, the user's
 version will always be used.
 
-An optional modifier can be supplied to any command by putting a placeholder, '%s',
+An optional modifier can be supplied to any command by putting a placeholder, '{{mod}}',
 into the config file's command string; then adding the modifier to the command string
-on execution, separated by a '/' - see the 'syslog' example above.
+on execution, separated by a '/' - see the 'syslog' example above. The strings {{nick}}
+and {{host}} also exist, to populate the command with your own nickname for the server
+and its actual hostname.
 
 Server-specific commands may be specified, which can either be unique, or with the same
 name as a generic command, which it will over-ride.
