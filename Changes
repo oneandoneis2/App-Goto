@@ -1,6 +1,7 @@
 Revision history for App-Goto
 
 {{$NEXT}}
+        - Added prereq detection due to CPAN testers reports
 
 0.06  2013-03-30 17:08:30 GMT
         - Minor documentation update
