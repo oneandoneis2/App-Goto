@@ -7,6 +7,8 @@ use Module::Build 0.3601;
 
 my %module_build_args = (
   "build_requires" => {
+    "File::Find" => 0,
+    "File::Temp" => 0,
     "Module::Build" => "0.3601",
     "Test::More" => "0.88"
   },
@@ -18,13 +20,17 @@ my %module_build_args = (
     "Dominic Humphries <dominic\@oneandoneis2.com>"
   ],
   "dist_name" => "App-Goto",
-  "dist_version" => "0.06",
+  "dist_version" => "0.07",
   "license" => "perl",
   "module_name" => "App::Goto",
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
-    "perl" => "5.012000"
+    "Config::Tiny" => 0,
+    "Moo" => 0,
+    "perl" => "v5.12.0",
+    "strict" => 0,
+    "warnings" => 0
   },
   "script_files" => [
     "script/g2"

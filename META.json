@@ -31,11 +31,17 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.012000"
+            "Config::Tiny" : "0",
+            "Moo" : "0",
+            "perl" : "v5.12.0",
+            "strict" : "0",
+            "warnings" : "0"
          }
       },
       "test" : {
          "requires" : {
+            "File::Find" : "0",
+            "File::Temp" : "0",
             "Test::More" : "0.88"
          }
       }
@@ -52,6 +58,6 @@
          "web" : "https://github.com/oneandoneis2/App-Goto"
       }
    },
-   "version" : "0.06"
+   "version" : "0.07"
 }
 
